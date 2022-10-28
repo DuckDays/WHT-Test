@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai&display=swap');
+        *{font-family: 'Noto Sans Thai', sans-serif;}
+    </style>
+  </head>
+  <body>
+    <div class="container mt-3 col-md-4 shadow rounded-3 p-3">    
+        <h4 class="text-center text-success">คำนวณภาษีหัก ณ ที่จ่าย</h4>
+        <h5 class="text-center text-success">จากยอดที่ Supplier ต้องการรับสุทธิ</h5>
+
+        <form id="WHTform" onsubmit="submitFunction(this)">
+
+            <div class="p-3">
+                <input type="text" class="form-control text-center" id="amount" name="amount" placeholder="พิมพ์ยอดที่ต้องการรับสุทธิ" required>
+            </div>
+
+            <div class="p-1 text-center">
+                <button class="btn btn-primary w-25" id="btn1">คำนวณ</button>                
+            </div>
+
+        </form>
+    </div>
+    <script>
+        function submitFunction(PaymentAmount){
+            event.preventDefault()
+            google.script.run.withSuccessHandler((recording)=>{                              
+              //console.log(recording)
+              document.getElementById('WHTform').reset()               
+            }).Calculate(PaymentAmount)
+        }
+    </script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- Import autoNumeric -->
+    <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.1.0"></script>
+
+    <!-- Integrating the LIFF SDK -->
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+    <!-- Start Script For Get Form Values and Calculation -->
+    <script>
+        // Initialize LIFF
+        liff
+          .init({ liffId: "1657458120-J1bmkEmL" })
+          .then(() => {
+            runApp();
+          })
+          .catch((err) => {
+            console.error(err.code, error.message);
+          });
+  
+         
+        // Creat flex message
+        function createFlexMessage(
+            data1,
+            data2,
+            data3
+        ) {
+          let data1 = recording[1];
+          let data2 = recording[2];
+          let data3 = recording[3];            
+ 
+            // Using flex message simulator for json
+            let flexJson = {
+              type: "bubble",
+              size: "giga",
+              body: {
+                type: "box",
+                layout: "vertical",
+                contents: [
+                  {
+                    type: "box",
+                    layout: "horizontal",
+                    contents: [
+                      {
+                        type: "text",
+                        text: "P Auto 095-826-3339",
+                        size: "xl",
+                        color: "#0551c2ff",
+                        weight: "bold",
+                        align: "center",
+                      },
+                    ],
+                  },
+                  {
+                    type: "separator",
+                    margin: "lg",
+                  },
+                  {
+                    type: "box",
+                    layout: "horizontal",
+                    contents: [
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: "ปีจดทะเบียนรถยนต์",
+                            size: "md",
+                            weight: "bold",
+                          },
+                        ],
+                        width: "150px",
+                      },
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: `${data1}`,
+                            size: "md",
+                            weight: "bold",
+                            align: "end",
+                          },
+                        ],
+                      },
+                    ],
+                    margin: "lg",
+                  },
+                  {
+                    type: "box",
+                    layout: "horizontal",
+                    contents: [
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: "ราคารถยนต์",
+                            size: "md",
+                            weight: "bold",
+                          },
+                        ],
+                        width: "100px",
+                      },
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: `${data2} บาท`,
+                            size: "md",
+                            weight: "bold",
+                            align: "end",
+                          },
+                        ],
+                      },
+                    ],
+                    margin: "lg",
+                  },
+                  {
+                    type: "box",
+                    layout: "horizontal",
+                    contents: [
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: "เงินดาวน์",
+                            size: "md",
+                            weight: "bold",
+                          },
+                        ],
+                        width: "100px",
+                      },
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: `${data3} บาท`,
+                            size: "md",
+                            weight: "bold",
+                            align: "end",
+                          },
+                        ],
+                      },
+                    ],
+                    margin: "lg",
+                  },
+                  {
+                    type: "box",
+                    layout: "horizontal",
+                    contents: [
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: "ยอดจัด",
+                            size: "lg",
+                            weight: "bold",
+                          },
+                        ],
+                        width: "100px",
+                      },
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: `${data3} บาท`,
+                            size: "lg",
+                            weight: "bold",
+                            align: "end",
+                          },
+                        ],
+                      },
+                    ],
+                    margin: "lg",
+                  },
+                  {
+                    type: "separator",
+                    margin: "lg",
+                  },
+                  {
+                    type: "box",
+                    layout: "horizontal",
+                    contents: [
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: "ค่างวด",
+                            size: "md",
+                          },
+                        ],
+                      },
+                    ],
+                    margin: "lg",
+                  },
+                  {
+                    type: "box",
+                    layout: "horizontal",
+                    contents: [
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: `36 งวด (${data1}%)`,
+                            size: "sm",
+                          },
+                        ],
+                        width: "110px",
+                      },
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: `${data1} บาท`,
+                            size: "sm",
+                            align: "end",
+                            weight: "bold",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    type: "box",
+                    layout: "horizontal",
+                    contents: [
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: `48 งวด (${data1}%)`,
+                            size: "sm",
+                          },
+                        ],
+                        width: "110px",
+                      },
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: `${data1} บาท`,
+                            size: "sm",
+                            align: "end",
+                            weight: "bold",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    type: "box",
+                    layout: "horizontal",
+                    contents: [
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: `60 งวด (${data1}%)`,
+                            size: "sm",
+                          },
+                        ],
+                        width: "110px",
+                      },
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: `${data1} บาท`,
+                            size: "sm",
+                            align: "end",
+                            weight: "bold",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    type: "box",
+                    layout: "horizontal",
+                    contents: [
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: `72 งวด (${data1}%)`,
+                            size: "sm",
+                          },
+                        ],
+                        width: "110px",
+                      },
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: `${data1} บาท`,
+                            size: "sm",
+                            align: "end",
+                            weight: "bold",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    type: "box",
+                    layout: "horizontal",
+                    contents: [
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: `84 งวด (${data1}%)`,
+                            size: "sm",
+                          },
+                        ],
+                        width: "110px",
+                      },
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                          {
+                            type: "text",
+                            text: `${data1} บาท`,
+                            size: "sm",
+                            align: "end",
+                            weight: "bold",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    type: "separator",
+                    margin: "lg",
+                  },
+                  {
+                    type: "text",
+                    text:
+                      "*ราคาค่างวดยังไม่รวม VAT\n*สำหรับพิจารณาข้อมูลเบื้องต้นไม่สามารถนำไปอ้างอิงในการซื้อขายได้",
+                    size: "xxs",
+                    weight: "bold",
+                    margin: "lg",
+                    align: "center",
+                    color: "#e8505b",
+                    wrap: true,
+                  },
+                ],
+                spacing: "md",
+              },
+              footer: {
+                type: "box",
+                layout: "vertical",
+                contents: [
+                  {
+                    type: "button",
+                    action: {
+                      type: "uri",
+                      label: "สอบถามเพิ่มเติม",
+                      uri: "tel:0958263339",
+                    },
+                    style: "primary",
+                  },
+                ],
+              },
+            };
+  
+            return [{ type: "flex", altText: "คำนวณค่างวดรถ", contents: flexJson }];
+          }
+        
+      </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+  </body>
+</html>
